@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {   
     private Rigidbody2D rb2D;
-    private float moveSpeed;
-    private float jumpForce;
+    public float moveSpeed;
+    public float jumpForce;
     private bool isJumping;
     private float moveHorizontal;
     private float moveVertical;
@@ -15,10 +15,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-
-
-        moveSpeed = 2f;
-        jumpForce = 4f;
         isJumping = false;
     }
 
@@ -27,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
+        
     }
     void FixedUpdate()
     {
@@ -34,11 +31,16 @@ public class PlayerController : MonoBehaviour
         {
             rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
         }
-
-        if (!isJumping && moveVertical > 0.1f)
+        if (!isJumping && Input.GetKeyDown(KeyCode.Space))
         {
-            rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
+            rb2D.velocity = new Vector3 (rb2D.velocity.x,jumpForce);
         }
+
+
+        //if (!isJumping && moveVertical > 0.1f)
+        //{
+        //    rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
+        //}
     }
 
     void OnTriggerEnter2D(Collider2D collision)
